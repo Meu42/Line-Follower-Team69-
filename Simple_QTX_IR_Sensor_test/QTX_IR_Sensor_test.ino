@@ -5,28 +5,31 @@ QTRSensors qtr;
 const uint8_t SensorCount = 8;
 uint16_t sensorValues[SensorCount];
 
-// Define your safe ESP32-S3 GPIOs here
-const uint8_t sensorPins[] = {4, 5, 6, 7, 15, 16, 17, 18};
-const uint8_t emitterPin = 1;
-
 void setup() {
-  Serial.begin(115200); // ESP32-S3 is faster, 115200 is standard
-  
+  // Configure the sensor type as RC
   qtr.setTypeRC();
-  qtr.setSensorPins(sensorPins, SensorCount);
-  qtr.setEmitterPin(emitterPin);
+  
+  // Define the pins used for the 8 sensors
+  qtr.setSensorPins((const uint8_t[]){5,6,7,8,9,10,11,12}, SensorCount);
+  
+  // Set the emitter control pin (optional)
+  qtr.setEmitterPin(4);
 
-  Serial.println("ESP32-S3: Reading raw QTR-8RC data...");
+  Serial.begin(9600);
+  Serial.println("Reading raw QTR-8RC data (No calibration)...");
 }
 
 void loop() {
+  // read() gives raw values in microseconds (0 to 2500 by default)
+  // Higher values = Darker surface
   qtr.read(sensorValues);
 
+  // Print values to Serial Monitor
   for (uint8_t i = 0; i < SensorCount; i++) {
     Serial.print(sensorValues[i]);
     Serial.print('\t');
   }
   Serial.println();
 
-  delay(50); // Faster polling for the S3
+  delay(100); 
 }
