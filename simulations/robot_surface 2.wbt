@@ -1,0 +1,212 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/floors/protos/RectangleArena.proto"
+
+WorldInfo {
+}
+Viewpoint {
+  fieldOfView 0.785391
+  orientation 0.32643950790939735 0.3810149778440123 -0.8650230253203652 1.3484321307809812
+  position -2.4010218744693117 10.241851985403466 7.159488259642777
+}
+TexturedBackground {
+  texture "dusk"
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  translation 1 0 0
+  rotation 0 0 1 1.7016996938995748
+  floorSize 10 7
+  floorTileSize 10 7
+  floorAppearance PBRAppearance {
+    baseColorMap ImageTexture {
+      url [
+        "../track.jpeg"
+      ]
+    }
+    roughness 1
+  }
+}
+Solid {
+  translation 0.0230924611882196 0.0352675226205618 0.12057000000034314
+  rotation 8.007732230122791e-10 -4.832412384231194e-09 -1 0.06554999437665182
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0 0.333333 1
+        roughness 1
+        metalness 0
+      }
+      geometry DEF bx Box {
+        size 0.5 0.5 0.5
+      }
+    }
+  ]
+  boundingObject Shape {
+    geometry Box {
+      size 0.5 0.5 0.3
+    }
+  }
+  physics Physics {
+  }
+  linearVelocity 4.056549689310533e-10 5.3629098505669185e-11 -3.5337893039386573e-12
+  angularVelocity -3.569581050871008e-10 2.7000641390874313e-09 -1.2093759571294988e-17
+}
+Robot {
+  translation 2.0109421625351516 4.437286168057438 0.09948818390464016
+  rotation -0.0009126019535098636 0.011649635185883685 0.999931724248066 0.12939761440786077
+  children [
+    DistanceSensor {
+      translation 0.15 0.15 -0.09
+      rotation 0 1 0 1.5708
+      children [
+        DEF b2 Shape {
+          appearance PBRAppearance {
+            baseColor 0.7 1 0.3
+          }
+          geometry Box {
+            size 0.01 0.01 0.01
+          }
+        }
+      ]
+      name "ds_right"
+      boundingObject USE b2
+      lookupTable [
+        0 0 0
+        0.04 1000 0
+      ]
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.15 -0.15 -0.09
+      rotation 0 1 0 1.5708
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.7 1 0.3
+          }
+          geometry Box {
+            size 0.01 0.01 0.01
+          }
+        }
+      ]
+      name "ds_left"
+      boundingObject USE b2
+      lookupTable [
+        0 0 0
+        0.04 1000 0
+      ]
+      type "infra-red"
+    }
+    BallJoint {
+      jointParameters BallJointParameters {
+        position -2508.833535935073
+        anchor 0.1 0 -0.08
+      }
+      endPoint Solid {
+        translation 0.09936288123402148 0.00024162404194250087 -0.08032144030976099
+        rotation -0.6206440887003626 -0.12547979059467193 -0.7739869102986262 1.1419859111359738
+        children [
+          Shape {
+            appearance PBRAppearance {
+            }
+            geometry DEF sp Sphere {
+              radius 0.02
+              subdivision 3
+            }
+          }
+        ]
+        name "solid(2)"
+        boundingObject USE sp
+        physics Physics {
+        }
+        linearVelocity 0.4842279530696216 0.06260842100418006 0.00028517731497014595
+        angularVelocity -3.130394422114261 24.21145303912193 0.9337398832721076
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position -58051.30027532911
+        axis 0 1 0
+        anchor -0.1 -0.123 -0.05
+      }
+      device [
+        RotationalMotor {
+          name "right_motor"
+          maxVelocity 1000
+        }
+      ]
+      endPoint Solid {
+        translation -0.099990881790072 -0.123 -0.05000650371030326
+        rotation 0.8083091795497286 0.4163141806119757 0.4163157134639816 4.50116309159539
+        children [
+          DEF cil2 Shape {
+            appearance PBRAppearance {
+              baseColor 1 0.2 1
+            }
+            geometry Cylinder {
+              height 0.02
+              radius 0.05
+            }
+          }
+        ]
+        name "solid(1)"
+        boundingObject USE cil2
+        physics Physics {
+        }
+        linearVelocity 0.4983299952443323 0.06486689937608787 -2.1124541597066873e-05
+        angularVelocity -1.2973417337217938 9.966611633046954 -2.3765609120202655e-05
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position -56052.45274544284
+        axis 0 1 0
+        anchor -0.1 0.123 -0.05
+      }
+      device [
+        RotationalMotor {
+          name "left_motor"
+          maxVelocity 1000
+        }
+      ]
+      endPoint Solid {
+        translation -0.1 0.123 -0.05
+        rotation 0.9938986970115924 0.07799145878332989 0.07799174594472909 4.706265344709388
+        children [
+          DEF cil Shape {
+            appearance PBRAppearance {
+              baseColor 1 0.4 1
+            }
+            geometry Cylinder {
+              height 0.02
+              radius 0.05
+            }
+          }
+        ]
+        boundingObject USE cil
+        physics Physics {
+        }
+        linearVelocity 0.498382267913171 0.06487359693451857 -2.1250473808009217e-05
+        angularVelocity -1.297476533905145 9.967647300903929 -2.3812305564869748e-05
+      }
+    }
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0 1 0.5
+      }
+      geometry DEF box Box {
+        size 0.3 0.2 0.02
+      }
+    }
+  ]
+  boundingObject USE box
+  physics Physics {
+  }
+  controller "linefollow1"
+  linearVelocity 0.5009347861918544 0.06522557908060278 -0.005140729132341999
+  angularVelocity -0.007134411895042463 0.05124589259409689 -3.518095888429103e-05
+}

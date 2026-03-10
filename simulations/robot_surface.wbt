@@ -1,0 +1,170 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/floors/protos/RectangleArena.proto"
+
+WorldInfo {
+}
+Viewpoint {
+  orientation -0.309656750502378 0.6863114408456987 0.6580952081823793 1.0137229935907277
+  position -2.384640458602019 -2.9127610317745236 6.782206713205152
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  floorSize 10 7
+  floorTileSize 10 7
+  floorAppearance PBRAppearance {
+    baseColorMap ImageTexture {
+      url [
+        "../track.jpeg"
+      ]
+    }
+    roughness 1
+  }
+}
+Robot {
+  translation 3.34031 2.41 0.0993409
+  rotation 0 0 1 1.01503e-06
+  children [
+    DistanceSensor {
+      translation -0.15 0.15 -0.09
+      rotation 0 1 0 1.5708
+      children [
+        DEF b2 Shape {
+          appearance PBRAppearance {
+            baseColor 0.7 1 0.3
+          }
+          geometry Box {
+            size 0.01 0.01 0.01
+          }
+        }
+      ]
+      name "ds_right"
+      boundingObject USE b2
+      lookupTable [
+        0 0 0
+        0.04 1000 0
+      ]
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation -0.15 -0.15 -0.09
+      rotation 0 1 0 1.5708
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.7 1 0.3
+          }
+          geometry Box {
+            size 0.01 0.01 0.01
+          }
+        }
+      ]
+      name "ds_left"
+      boundingObject USE b2
+      lookupTable [
+        0 0 0
+        0.04 1000 0
+      ]
+      type "infra-red"
+    }
+    BallJoint {
+      jointParameters BallJointParameters {
+        anchor -0.1 0 -0.08
+      }
+      endPoint Solid {
+        translation -0.0999751642591831 -6.312436100699569e-11 -0.08004064717213993
+        rotation -1.3455989332458658e-06 -0.9999999999886969 -4.56021944555481e-06 1.1325332393447523
+        children [
+          Shape {
+            appearance PBRAppearance {
+            }
+            geometry DEF sp Sphere {
+              radius 0.02
+              subdivision 3
+            }
+          }
+        ]
+        name "solid(2)"
+        boundingObject USE sp
+        physics Physics {
+        }
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        axis 0 1 0
+        anchor 0.1 -0.123 -0.05
+      }
+      device [
+        RotationalMotor {
+          name "right_motor"
+        }
+      ]
+      endPoint Solid {
+        translation 0.09997960275884012 -0.12299999999779682 -0.0500112023072734
+        rotation 1 -8.005206701675829e-09 4.154369946941663e-09 1.5708000087477523
+        children [
+          DEF cil2 Shape {
+            appearance PBRAppearance {
+              baseColor 1 0.2 1
+            }
+            geometry Cylinder {
+              height 0.02
+              radius 0.05
+            }
+          }
+        ]
+        name "solid(1)"
+        boundingObject USE cil2
+        physics Physics {
+        }
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        axis 0 1 0
+        anchor 0.1 0.123 -0.05
+      }
+      device [
+        RotationalMotor {
+          name "left_motor"
+        }
+      ]
+      endPoint Solid {
+        translation 0.099979599759566 0.12300000000220299 -0.05001119668353943
+        rotation 1 -6.022565941072198e-09 2.171721729321018e-09 1.5708000087477236
+        children [
+          DEF cil Shape {
+            appearance PBRAppearance {
+              baseColor 1 0.4 1
+            }
+            geometry Cylinder {
+              height 0.02
+              radius 0.05
+            }
+          }
+        ]
+        boundingObject USE cil
+        physics Physics {
+        }
+      }
+    }
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0 1 0.5
+      }
+      geometry DEF box Box {
+        size 0.3 0.2 0.02
+      }
+    }
+  ]
+  boundingObject USE box
+  physics Physics {
+  }
+  controller "linefollow1"
+}
