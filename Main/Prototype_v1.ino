@@ -10,8 +10,8 @@ const uint8_t emitterPin = 4;
 
 // Motor A (Left)
 #define PIN_PWMA 19
-#define PIN_AIN2 20
-#define PIN_AIN1 21 // Your updated pin
+#define PIN_AIN2 21
+#define PIN_AIN1 20 // Your updated pin
 
 // Motor B (Right)
 #define PIN_PWMB 17
