@@ -1,3 +1,4 @@
+//explanations are at the bottom
 #include <QTRSensors.h>
 #include <Adafruit_NeoPixel.h>
 
@@ -20,13 +21,12 @@ QTRSensors qtr;
 Adafruit_NeoPixel pixels(1, RGB_PIN, NEO_GRB + NEO_KHZ800);
 
 /**
- * PD TUNING Explanation
+ * PD TUNING PARAMETERS
  * Kp (Proportional): The "Strength" of the correction. High Kp makes the robot 
  * respond aggressively to off-center errors.
  * Kd (Derivative): The "Damper." It predicts the line's direction by looking at 
  * the rate of change, preventing the robot from overshooting (fishtailing).
  */
-
 float Kp = 0.05;
 float Kd = 0.25; 
 int lastError = 0;
@@ -45,17 +45,16 @@ void setup() {
   qtr.setSensorPins(sensorPins, SensorCount);
   qtr.setEmitterPin(emitterPin);
 
-  // Explanation
+  // --- CALIBRATION TECHNIQUE ---
   // Sensors don't see "Black" or "White" inherently; they see infrared reflectance values
   // which vary based on floor material, ambient light, and battery voltage.
   // The loop below records the minimum (brightest) and maximum (darkest) values 
   // for each individual sensor to normalize them to a scale of 0-1000.
-  
   pixels.setPixelColor(0, pixels.Color(255, 150, 0)); pixels.show();
   
   for (uint16_t i = 0; i < 200; i++) {
     // During this phase, the robot should be moved physically across the line
-    // so every sensor sees both the full black and full white surfaces.
+    // so every sensor "sees" both the full black and full white surfaces.
     qtr.calibrate();
     delay(10);
   }
@@ -109,3 +108,68 @@ void loop() {
 
   setMotors(leftMotorSpeed, rightMotorSpeed);
 }
+
+/* --------------------------------------------------------------------------------
+TECHNICAL DETAILS
+--------------------------------------------------------------------------------
+
+1. SENSOR CALIBRATION AND DATA NORMALIZATION
+IR sensors do not return a binary "black" or "white" value. Instead, they return 
+a voltage corresponding to the amount of IR light reflected back.
+
+THE NORMALIZATION TECHNIQUE:
+The calibration process utilizes a Min-Max Scaling algorithm. During the 
+calibration window, the robot records the extreme values for each sensor.
+Each raw reading (S_raw) is then mapped to a standardized scale (0–1000) 
+using the following logic:
+
+    S_normalized = [ S_raw - S_min ] / [ S_max - S_min ] x 1000
+
+This ensures that the `readLineBlack()` function always perceives the 
+"darkest" point as 1000 and the "brightest" point as 0, regardless of 
+ambient lighting or battery levels.
+
+--------------------------------------------------------------------------------
+
+2. CONTROL THEORY: PD LOGIC
+To achieve smooth motion, the robot uses a Proportional-Derivative (PD) controller. 
+This replaces simple "if-then" logic with a continuous mathematical function.
+
+COMPONENT BREAKDOWN:
+The control signal (u) is the sum of two distinct terms:
+
+* PROPORTIONAL TERM (Kp x error): 
+  The "restoring force." It generates a response proportional to the current 
+  distance from center. Large error = Sharp turn; Small error = Gentle turn.
+
+* DERIVATIVE TERM (Kd x de/dt) : 
+  The "damping force." By calculating the difference between current error and 
+  lastError, the robot determines its velocity toward the line. If the robot 
+  returns to center too quickly, the D-term becomes negative, "braking" the 
+  turn to prevent overshoot and oscillation.
+
+THE RESULTING EQUATION:
+    u(t) = K_p e(t) + K_d (e(t) - e(t-1))
+
+--------------------------------------------------------------------------------
+
+3. KINEMATICS: DIFFERENTIAL STEERING
+This robot relies on Differential Drive kinematics, changing the angular velocity 
+of two independent drive wheels to change the heading.
+
+VELOCITY DISTRIBUTION:
+The output of the PD controller (u) is applied as a differential offset to 
+a constant baseSpeed (Vb):
+
+| SCENARIO     | MATH                      | RESULT        |
+|--------------|---------------------------|---------------|
+| Centered     | u = 0                   | Straight      |
+| Line Right   | u > 0                   | Pivot Right   |
+| Line Left    | u < 0                   | Pivot Left    |
+
+CONSTRAINTS AND SATURATION:
+Motors have a physical PWM limit (0–255). The `constrain()` function prevents 
+"Actuator Saturation," ensuring that the math doesn't command a speed the 
+hardware cannot achieve, which would lead to unpredictable steering.
+--------------------------------------------------------------------------------
+*/
