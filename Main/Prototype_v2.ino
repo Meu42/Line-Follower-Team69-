@@ -93,7 +93,7 @@ void loop() {
 
   // 2. INTERSECTION (Zone 3 Crossing)
   // If we see a cross (blackCount > 5) but we haven't been running long enough to finish,
-  // it's likely the intersection. IGNORE IT by driving STRAIGHT.
+  // it's likely the intersection so IGNORE IT 
   if (blackCount >= 5) {
     // Force straight drive for a split second to clear the intersection
     setMotors(baseSpeed, baseSpeed);
@@ -111,3 +111,5 @@ void loop() {
 
   setMotors(leftMotorSpeed, rightMotorSpeed);
 }
+
+//added intersection handling and a logic to stop at the finish line
