@@ -20,19 +20,13 @@ const uint8_t emitterPin = 4;
 QTRSensors qtr;
 Adafruit_NeoPixel pixels(1, RGB_PIN, NEO_GRB + NEO_KHZ800);
 
-// --- TUNING FOR SMOOTH TRACK ---
-// Kp: Lower is better for smooth curves. 
-// Too high, and it will oscillate on the long curves.
 float Kp = 0.045; 
-// Kd: increased to dampen the momentum of the robot at high speeds.
 float Kd = 1.8; 
 
 int lastError = 0;
 
-// --- SPEED SETTINGS ---
-// Zone 1 is fast, but Zone 2 (Roundabout) needs steady torque.
 const int baseSpeed = 160; 
-const int maxSpeed = 240;
+const int maxSpeed = 240; //for fast conering
 
 void setup() {
   Serial.begin(115200);
@@ -49,7 +43,7 @@ void setup() {
   qtr.setTypeRC();
   qtr.setSensorPins(sensorPins, SensorCount);
   qtr.setEmitterPin(emitterPin);
-  qtr.setSamplesPerSensor(6); // Slightly lower oversampling for faster response
+  qtr.setSamplesPerSensor(6); 
   qtr.setTimeout(2500);
 
   // Calibration
@@ -68,9 +62,6 @@ void setup() {
 }
 
 void setMotors(int left, int right) {
-  // CONSTRAINT: 0 to maxSpeed. 
-  // We DO NOT allow negative numbers (reverse) for smooth tracks.
-  // This prevents the robot from jittering backward on a curve.
   left = constrain(left, 0, maxSpeed);
   right = constrain(right, 0, maxSpeed);
 
@@ -85,8 +76,7 @@ void setMotors(int left, int right) {
 
 void loop() {
   uint16_t position = qtr.readLineBlack(sensorValues);
-  
-  // --- INTERSECTION & FINISH LINE LOGIC ---
+
   int blackCount = 0;
   for (int i = 0; i < SensorCount; i++) {
     if (sensorValues[i] > 800) blackCount++;
