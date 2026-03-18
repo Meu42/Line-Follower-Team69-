@@ -1,7 +1,3 @@
-/* * ESP32-S3-N16R8 Motor Test for TB6612FNG
- * Pin mapping adjusted to avoid internal PSRAM conflicts (GPIO 35-37)
- */
-
 #include <Adafruit_NeoPixel.h>
 
 // --- Pin Definitions ---
@@ -31,8 +27,6 @@ void setup() {
   pinMode(PIN_PWMB, OUTPUT); pinMode(PIN_BIN1, OUTPUT); pinMode(PIN_BIN2, OUTPUT);
   pinMode(PIN_STBY, OUTPUT);
 
-  // --- CRITICAL STEP ---
-  // The TB6612FNG driver will remain in sleep mode until STBY is HIGH.
   digitalWrite(PIN_STBY, HIGH);
   
   Serial.println("System Ready. Motors testing in 3 seconds...");
