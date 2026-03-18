@@ -1,6 +1,4 @@
-The repository consists of personal testing done by Sanvidu and Senithu in Gato and S3nit directories respectively 
-
-To the end we collectively used Main as the directory of our code and we both updated it
+Main directory contains all the verisons of our code for the line follower by Sanvidu and Senithu
 
 In each version of the code in Main directory technical explanations are at the bottom 
 
@@ -8,5 +6,5 @@ Each new iteration / improved  versions only contain technical details of the ne
 
 Simulation directory contains code of the simulation of the robot maintained by Lithika and Thaanu
 
-3D model folder contains the .STL file of the chassi we inteded to print for the robot
+3D model folder contains the .STL file of the chassi we inteded to print for the robot made by Himal and Dananjaya
 
