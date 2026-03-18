@@ -1,7 +1,7 @@
 #include <QTRSensors.h>
 #include <Adafruit_NeoPixel.h>
 
-// --- Pin Definitions ---
+// -- Pin Definitions --
 const uint8_t SensorCount = 8;
 uint16_t sensorValues[SensorCount];
 const uint8_t sensorPins[] = {5, 6, 7, 8, 9, 10, 11, 12};
