@@ -149,7 +149,7 @@ The control signal (u) is the sum of two distinct terms:
   turn to prevent overshoot and oscillation.
 
 THE RESULTING EQUATION:
-    u(t) = K_p e(t) + K_d (e(t) - e(t-1))
+    u(t) = Kp e(t) + Kd (e(t) - e(t-1))
 
 --------------------------------------------------------------------------------
 
